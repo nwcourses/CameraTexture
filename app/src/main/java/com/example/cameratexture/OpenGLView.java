@@ -10,9 +10,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLES20;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+
 import java.nio.ShortBuffer;
 
 
@@ -50,8 +49,6 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer,
         GLES20.glClearColor(0.0f,0.0f,0.3f,0.0f);
         GLES20.glClearDepthf(1.0f);
 
-
-        createShapes();
 
         // http://stackoverflow.com/questions/6414003/using-surfacetexture-in-android
         final int GL_TEXTURE_EXTERNAL_OES = 0x8d65;
@@ -108,28 +105,6 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer,
         GLES20.glViewport(0, 0, w, h);
     }
 
-
-    private void createShapes() {
-
-        // this seemed to crash first time in onDrawFrame(), now seems to work
-        // better off going in onSurfaceCreated() anyway, more efficient
-
-        float[] cameraRect = { -1,1,0,  -1,-1,0, 1,-1,0,  1,1,0 };
-        short[] indices = { 0,1,2, 2,3,0 };
-
-        ByteBuffer vbuf0 = ByteBuffer.allocateDirect(cameraRect.length * Float.SIZE);
-        vbuf0.order(ByteOrder.nativeOrder());
-        vbuf = vbuf0.asFloatBuffer();
-        vbuf.put(cameraRect);
-        vbuf.position(0);
-
-        ByteBuffer ibuf0 = ByteBuffer.allocateDirect(indices.length * Short.SIZE);
-        ibuf0.order(ByteOrder.nativeOrder());
-        ibuf = ibuf0.asShortBuffer();
-        ibuf.put(indices);
-        ibuf.position(0);
-
-    }
 
     public boolean isTextureAvailable(){
         return cameraFeedSurfaceTexture != null;
